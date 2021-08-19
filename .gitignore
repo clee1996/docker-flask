@@ -1,2 +1,6 @@
 /poetry_demo/virtualenv
 /postgres-demo-docker/.venv
+/flask_practice/flaskvenv
+/flask_practice/flaskr/__pycache__
+/postgres-demo-docker/postgres_demo_docker/__pycache__
+/flask_practice_2/flask_practice_2/__pycache__
