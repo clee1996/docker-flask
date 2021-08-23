@@ -12,11 +12,6 @@ class Post(db.Model):
     name = db.Column(db.String(128))
     body = db.Column(db.String(128))
 
-
-
-"""
-first = Post(name='first post', body='this is the body of my first post')
-db.session.add(first)
-db.session.commit()
-"""
-
+@app.route('/')
+def greeting():
+    return "hello world!"
