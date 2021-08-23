@@ -2,17 +2,23 @@ version: "3.9"
 services:
   dbtest:
     environment:
-      POSTGRES_USER: test
-      POSTGRES_PASSWORD: test
-      POSTGRES_DB: rando
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: example
     image: "postgres:alpine"
     volumes:
       - db-data:/var/lib/postgres/data
-
     ports:
       - "5432:5432"
   web:
     build: .
+    environment:
+      FLASK_ENV: development
+      SQLALCHEMY_DATABASE_URI: postgresql+psycopg2://postgres:postgres@dbtest:5432/example
+    volumes:
+      - .:/projecttt
+    ports:
+      - "5000:5000"
 volumes:
   db-data:
 

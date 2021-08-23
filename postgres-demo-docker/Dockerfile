@@ -14,6 +14,8 @@ RUN poetry config virtualenvs.create false
 
 RUN poetry install
 
+EXPOSE 5000
+
 COPY . .
 
 CMD ["python","postgres_demo_docker/app.py"]
