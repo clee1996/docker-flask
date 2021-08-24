@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
@@ -11,13 +11,10 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-
-class Post(db.Model):
+class People(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(128))
-    body = db.Column(db.String(128))
-
-
+    pname = db.Column(db.String(80), unique=True, nullable=False)
+    color = db.Column(db.String(120), nullable=False)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -25,7 +22,23 @@ class User(db.Model):
 
 @app.route('/')
 def greeting():
-    return 'hello WHAT UP '
+    return '<a href="/addperson"><button>Click me</button></a>'
+
+@app.route('/addperson')
+def addperson():
+    return render_template("index.html")
+
+@app.route('/personadd', methods=['POST'])
+def personadd():
+    personname = request.form["pname"]
+    color = request.form["color"]
+    entry = People(pname=personname, color=color)
+    db.session.add(entry)
+    db.session.commit()
+
+    return render_template("index.html")
 
 
-app.run(host="0.0.0.0")
+if __name__ == "__main__":
+    db.create_all()
+    app.run(host="0.0.0.0")

@@ -12,6 +12,8 @@ services:
       - "5432:5432"
   web:
     build: .
+    depends_on:
+      - dbtest
     environment:
       FLASK_ENV: development
       SQLALCHEMY_DATABASE_URI: postgresql+psycopg2://postgres:postgres@dbtest:5432/example
@@ -19,6 +21,7 @@ services:
       - .:/projecttt
     ports:
       - "5000:5000"
+    restart: "always"
 volumes:
   db-data:
 
