@@ -22,7 +22,8 @@ class User(db.Model):
 
 @app.route('/')
 def greeting():
-    return '<a href="/addperson"><button>Click me</button></a>'
+    # return '<a href="/addperson"><button>Click me</button></a>'
+    return render_template("greeting.html")
 
 @app.route('/addperson')
 def addperson():
