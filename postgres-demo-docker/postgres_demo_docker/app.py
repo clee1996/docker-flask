@@ -20,6 +20,11 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(128))
 
+class Recipe(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), nullable=False)
+    ingredients = db.Column(db.String(128), nullable=False)
+
 @app.route('/')
 def greeting():
     # return '<a href="/addperson"><button>Click me</button></a>'
@@ -28,6 +33,11 @@ def greeting():
 @app.route('/addperson')
 def addperson():
     return render_template("index.html")
+
+@app.route('/recipelist', methods=['GET'])
+def retrieveRecipes():
+    recipes = Recipe.query.all()
+    return render_template("recipes.html")
 
 @app.route('/personadd', methods=['POST'])
 def personadd():
