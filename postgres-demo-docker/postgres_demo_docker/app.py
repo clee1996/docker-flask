@@ -1,7 +1,8 @@
 import os
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_marshmallow import Marshmallow
 
 uri = os.environ["SQLALCHEMY_DATABASE_URI"]
 app = Flask(__name__)
@@ -10,6 +11,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+ma = Marshmallow(app)
 
 class People(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -25,6 +27,19 @@ class Recipe(db.Model):
     name = db.Column(db.String(80), nullable=False)
     ingredients = db.Column(db.String(128), nullable=False)
 
+#### SCHEMAS ####
+
+class RecipeSchema(ma.SQLAlchemySchema):
+    class Meta:
+        model = Recipe
+    id = ma.auto_field()
+    name = ma.auto_field()
+    ingredients = ma.auto_field()
+
+
+
+
+
 @app.route('/')
 def greeting():
     # return '<a href="/addperson"><button>Click me</button></a>'
@@ -36,8 +51,10 @@ def addperson():
 
 @app.route('/recipelist', methods=['GET'])
 def retrieveRecipes():
-    recipes = Recipe.query.all()
-    return render_template("recipes.html")
+    recipe_schema = RecipeSchema()
+    recipes = Recipe.query.first()
+    output = recipe_schema.dump(recipes)
+    return jsonify({"recipes": output})
 
 @app.route('/personadd', methods=['POST'])
 def personadd():
@@ -52,4 +69,4 @@ def personadd():
 
 if __name__ == "__main__":
     db.create_all()
-    app.run(host="0.0.0.0")
+    app.run(host="0.0.0.0", debug=True)
