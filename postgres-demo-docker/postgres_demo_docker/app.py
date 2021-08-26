@@ -52,9 +52,15 @@ def addperson():
 @app.route('/recipelist', methods=['GET'])
 def retrieveRecipes():
     recipe_schema = RecipeSchema()
-    recipes = Recipe.query.first()
-    output = recipe_schema.dump(recipes)
-    return jsonify({"recipes": output})
+    recipes = Recipe.query.all()
+    recipe_list = []
+    for recipe in recipes:
+        output = recipe_schema.dump(recipe)
+        recipe_list.append(output)
+
+    #output = recipe_schema.dump(recipes)
+    #return jsonify({"recipes": output})
+    return jsonify({"recipes": recipe_list})
 
 @app.route('/personadd', methods=['POST'])
 def personadd():
