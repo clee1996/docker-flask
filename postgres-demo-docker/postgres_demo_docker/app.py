@@ -45,14 +45,25 @@ def greeting():
     # return '<a href="/addperson"><button>Click me</button></a>'
     return render_template("greeting.html")
 
-@app.route('/addperson')
-def addperson():
-    return render_template("index.html")
+@app.route('/postingrecipe')
+def postingrecipe():
+    return render_template("recipeform.html")
+
+
+
+
+
+
+
+
+
+
 
 @app.route('/recipelist', methods=['GET'])
 def retrieveRecipes():
     recipe_schema = RecipeSchema()
     recipes = Recipe.query.all()
+    print(recipes)
     recipe_list = []
     for recipe in recipes:
         output = recipe_schema.dump(recipe)
@@ -62,15 +73,20 @@ def retrieveRecipes():
     #return jsonify({"recipes": output})
     return jsonify({"recipes": recipe_list})
 
-@app.route('/personadd', methods=['POST'])
-def personadd():
-    personname = request.form["pname"]
-    color = request.form["color"]
-    entry = People(pname=personname, color=color)
-    db.session.add(entry)
+@app.route('/recipepost', methods=['POST'])
+def postRecipe():
+    name = request.form['name']
+    ingredients = request.form['ingredients']
+    new_recipe = Recipe(name=name, ingredients=ingredients)
+    recipe_schema = RecipeSchema()
+    output = recipe_schema.dump(new_recipe)
+
+    db.session.add(new_recipe)
     db.session.commit()
 
-    return render_template("index.html")
+    return jsonify(output)
+
+
 
 
 if __name__ == "__main__":
