@@ -4,12 +4,15 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_marshmallow import Marshmallow
 
+
 uri = os.environ["SQLALCHEMY_DATABASE_URI"]
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = uri
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
+
 db = SQLAlchemy(app)
+engine = db.engine
 migrate = Migrate(app, db)
 ma = Marshmallow(app)
 
@@ -49,9 +52,9 @@ def greeting():
 def postingrecipe():
     return render_template("recipeform.html")
 
-
-
-
+@app.route('/allrecipes')
+def allrecipes():
+    return render_template()
 
 
 
