@@ -1,4 +1,5 @@
 import os
+import sys
 from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -59,22 +60,22 @@ def allrecipes():
 
 
 
-
-
-
 @app.route('/recipelist', methods=['GET'])
 def retrieveRecipes():
     recipe_schema = RecipeSchema()
     recipes = Recipe.query.all()
-    print(recipes)
+
+    #testing
+    print(recipes, file=sys.stderr)
+
     recipe_list = []
     for recipe in recipes:
         output = recipe_schema.dump(recipe)
         recipe_list.append(output)
 
-    #output = recipe_schema.dump(recipes)
-    #return jsonify({"recipes": output})
-    return jsonify({"recipes": recipe_list})
+    #return jsonify({"recipes": recipe_list})
+    return render_template("allrecipes.html", recipe_list=recipe_list)
+
 
 @app.route('/recipepost', methods=['POST'])
 def postRecipe():
@@ -88,6 +89,40 @@ def postRecipe():
     db.session.commit()
 
     return jsonify(output)
+
+
+@app.route('/recipe/<id>', methods=["GET"])
+def recipeInfo(id):
+    recipe = Recipe.query.get(id)
+    recipe_schema = RecipeSchema()
+
+    print(recipe.name, file=sys.stderr)
+
+    #return recipe_schema.jsonify(recipe)
+    return render_template("recipechangeform.html", recipe=recipe)
+
+@app.route('/recipeupdate/<id>', methods=["PUT"])
+def recipeUpdate(id):
+    recipe = Recipe.query.get(id)
+    name = request.json['name']
+    ingredients = request.json['ingredients']
+    recipe.name = name
+    recipe.ingredients = ingredients
+    recipe_schema = RecipeSchema()
+
+    db.session.commit()
+    return recipe_schema.jsonify(recipe)
+
+
+@app.route('/recipe/<id>', methods=["DELETE"])
+def recipeDelete(id):
+    recipe = Recipe.query.get(id)
+    db.session.delete(recipe)
+    db.session.commit()
+    recipe_schema = RecipeSchema()
+
+    return recipe_schema.jsonify(recipe)
+
 
 
 
