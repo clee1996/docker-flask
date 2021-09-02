@@ -17,14 +17,6 @@ engine = db.engine
 migrate = Migrate(app, db)
 ma = Marshmallow(app)
 
-class People(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    pname = db.Column(db.String(80), unique=True, nullable=False)
-    color = db.Column(db.String(120), nullable=False)
-
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(128))
 
 class Recipe(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -73,8 +65,8 @@ def retrieveRecipes():
         output = recipe_schema.dump(recipe)
         recipe_list.append(output)
 
-    #return jsonify({"recipes": recipe_list})
-    return render_template("allrecipes.html", recipe_list=recipe_list)
+    return jsonify({"recipes": recipe_list})
+    #return render_template("allrecipes.html", recipe_list=recipe_list)
 
 
 @app.route('/recipepost', methods=['POST'])
