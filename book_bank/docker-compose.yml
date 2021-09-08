@@ -23,5 +23,18 @@ services:
     ports:
       - "5000:5000"
     restart: "always"
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - reactvol:/usr/src/app
+    depends_on:
+      - backend
+
 volumes:
   db-data:
+  reactvol:
