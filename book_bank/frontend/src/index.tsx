@@ -1,14 +1,7 @@
-import React from "react";
-import ReactDOM from "react-dom";
-
-const App = () => {
-  <div>App</div>
-}
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './components/root.tsx'
 
 
-ReactDOM.render(
-  <React>
-    <App/>
-  </React>
-document.getElementById("root")
+ReactDOM.render(<App/>,document.getElementById("root")
 )
