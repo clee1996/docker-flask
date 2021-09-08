@@ -19,3 +19,10 @@ EXPOSE 5000
 COPY . .
 
 CMD ["python","postgres_demo_docker/app.py"]
+
+
+
+
+
+
+
