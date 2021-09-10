@@ -1,10 +1,11 @@
 import React from 'react'
-
-const App = () => (
+import App from './app'
+const Root = () => (
   <div>
-    PUT components here
+    <App/>
+
   </div>
 
 )
 
-export default App;
+export default Root;

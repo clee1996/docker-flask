@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import App from './components/root.tsx'
+import Root from './components/root'
 
 
-ReactDOM.render(<App/>,document.getElementById("root")
+ReactDOM.render(<Root/>,document.getElementById("root")
 )
