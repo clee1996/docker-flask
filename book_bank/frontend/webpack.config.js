@@ -1,42 +1,40 @@
 const path = require("path")
-const Configuration = require("webpack")
-const HtmlWebpackPlugin = require("html-webpack-plugin")
-const webpack = require("webpack")
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  mode: "development",
+  mode: 'development',
+  entry: './src/index.tsx',
+  devtool: 'inline-source-map',
   output: {
-    publicPath: "/",
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'webpack.bundle.js',
   },
-  entry: "./src/index.tsx",
   module: {
     rules: [
+    {
+      test: /\.jsx?$/,
+      exclude: /node_modules/,
+      use: {
+        loader: 'babel-loader',
+        options: {
+          presets: ['@babel/env', '@babel/react']
+        }
+      },
+    },
       {
-        test: /\.(ts|js)x?$/i,
+        test: /\.tsx?$/,
+        use: 'ts-loader',
         exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-          options: {
-            presets: [
-              "@babel/preset-env",
-              "@babel/preset-react",
-              "@babel/preset-typescript",
-            ],
-          },
-        },
       },
     ],
   },
-  resolve: {
-    extensions: [".tsx", ".ts", ".js"],
-  },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "src/index.html",
-    }),
-   new webpack.HotModuleReplacementPlugin({})
+      template: path.join(__dirname, 'src', 'index.html')
+    })
   ],
-  devtool: "inline-source-map",
-};
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js', '.jsx'],
+  }
 
-
+}
