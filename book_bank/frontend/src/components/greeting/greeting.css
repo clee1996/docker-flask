@@ -1,0 +1,34 @@
+
+.header {
+  margin: auto;
+  width: 50%;
+  padding: 10px;
+  text-align: center;
+}
+
+.link-tags {
+  display: flex;
+  justify-content: center;
+
+}
+
+.link-one {
+  margin: auto;
+}
+
+.link-two {
+  margin: auto;
+}
+
+.sub-header-greeting {
+  margin: auto;
+  width: 50%;
+  padding: 10px;
+  text-align: center;
+}
+
+.greeting-list-book {
+  margin: auto;
+  text-align: center;
+  padding: 10px;
+}

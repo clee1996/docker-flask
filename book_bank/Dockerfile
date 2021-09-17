@@ -18,4 +18,8 @@ EXPOSE 5000
 
 COPY . .
 
-CMD ["python", "book_bank/app.py"]
+ENV FLASK_APP=/project/book_bank/app
+
+RUN chmod +x ./entrypoint.sh
+ENTRYPOINT ["./entrypoint.sh"]
+
