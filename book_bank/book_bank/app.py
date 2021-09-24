@@ -141,6 +141,42 @@ def bookInfo(id):
     output = books_schema.dump(book)
     return jsonify(output)
 
+@app.route('/api/books/<id>', methods=['DELETE'])
+@jwt_required()
+def bookDelete(id):
+    books_schema = BookSchema()
+    book = Book.query.get(id)
+    output = books_schema.dump(book)
+    db.session.delete(book)
+    db.session.commit()
+    return jsonify(output)
+
+@app.route('/api/books/<id>', methods=['PATCH'])
+@jwt_required()
+def bookPatch(id):
+    content = request.get_json(force=True)
+    author = content["author"]
+    title = content["title"]
+    synopsis = content["synopsis"]
+    books_schema = BookSchema()
+    book = Book.query.get(id)
+    book.author = author
+    book.title = title
+    book.synopsis = synopsis
+    output = books_schema.dump(book)
+    db.session.commit()
+    return jsonify(output)
+
+@app.route('/api/personbooks/<id>')
+@jwt_required()
+def ownBooks(id):
+    book_schema = BookSchema()
+    person = Person.query.get(id)
+    arrOfBooks = person.books
+    output = book_schema.dump(arrOfBooks, many=True)
+    return jsonify({"books":output})
+
+
 
 @app.route('/api/bookspost', methods=['POST'])
 @jwt_required()
@@ -149,7 +185,8 @@ def bookPost():
     author = content["author"]
     title = content['title']
     synopsis = content['synopsis']
-    book = Book(author=author, title=title, synopsis=synopsis)
+    person = content['person_id']
+    book = Book(author=author, title=title, synopsis=synopsis, person_id=person)
     books_schema = BookSchema()
     output = books_schema.dump(book)
     db.session.add(book)

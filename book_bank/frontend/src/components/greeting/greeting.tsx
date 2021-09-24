@@ -15,8 +15,6 @@ type VolumeInfo = {
 
 const Greeting = () => {
 
-  console.log(useAuthState())
-
   const history = useHistory()
   const dispatch = useAuthDispatch()
   const [info, setInfo] = useState<VolumeInfo[]>([])
@@ -77,14 +75,10 @@ const Greeting = () => {
         </div>
       ))}
         <div className="link-tags">
-         <h2 className="link-one">
-           <Link to ="/books">Click here to View a List of Our Favorite Books</Link>
-           <Link to={{pathname: "/entry", state: {formType: "login"}}}>Click here to Login</Link>
-         </h2>
-         <h2 className="link-two">
-           <Link to={{pathname: "/entry", state: {formType: "signup"}}}>Click here to Signup</Link>
-           <Link to ="/formforbooks">Click here to Add a Book</Link>
-         </h2>
+          <Link to ="/books"><button className="link-one">Click here to View a List of Our Favorite Books</button></Link>
+
+          <Link to ="/formforbooks"><button className="link-two">Click here to Add a Book</button></Link>
+
         </div>
 
 

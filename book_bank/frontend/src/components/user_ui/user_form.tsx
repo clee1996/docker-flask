@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {useLocation, useHistory} from 'react-router-dom'
 import {loginUser, useAuthState, useAuthDispatch} from '../context/index.js'
 
@@ -21,10 +21,11 @@ const state = location.state as stateType
 const {formType} = state;
 const dispatch = useAuthDispatch()
 const history = useHistory()
+const [errr, displayErr] = useState(false)
+const [msg, setMsg] = useState("")
 
 
 const {loading, errorMesage} = useAuthState()
-console.log(useAuthState())
 
 
 
@@ -39,10 +40,14 @@ console.log(useAuthState())
     const submit = async () => {
       try {
       let res =  await loginUser(dispatch, data)
-      if (!res.user) return
+      console.log(res)
+      if (!res.user) {
+        displayErr(true)
+        setMsg(res.msg)
+        return
+      }
      history.push('/greeting')
       } catch (error) {
-        console.log(error)
       }
     }
 
@@ -80,6 +85,7 @@ console.log(useAuthState())
         <label>Username:</label><input type="password" name="password"></input>
         <button type="submit">Login</button>
       </form>
+      {errr ? <div>{msg}</div> : null}
     </div>
   )
   }

@@ -1,10 +1,12 @@
 import React, {useState} from 'react'
 import './form_book.css'
+import {useAuthState} from '../context/index.js'
 
 const Form = () => {
 
   const [formData, updateFormData] = useState({author: "", title: "", synopsis: ""})
   const [showPostStatus, updatePostStatus] = useState(false)
+  const user = useAuthState()
 
 
   const handleSubmit = (event: any) => {
@@ -12,12 +14,16 @@ const Form = () => {
     let url = 'http://localhost:5000/api/bookspost'
     let data = {author: event.target.author.value,
       title: event.target.title.value,
-    synopsis: event.target.synopsis.value
+    synopsis: event.target.synopsis.value,
+    person_id: user.userDetails.id
     }
+
 
     fetch(url,
     {method: 'POST',
-    body: JSON.stringify(data)}
+    body: JSON.stringify(data),
+    headers: {Authorization:`Bearer ${user.token}`}
+    }
          ).then(res => {
            updatePostStatus(true)
          })

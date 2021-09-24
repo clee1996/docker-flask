@@ -2,7 +2,6 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 
 const Homepage = (props: any) => {
-  console.log(props)
 
   return (
     <div>

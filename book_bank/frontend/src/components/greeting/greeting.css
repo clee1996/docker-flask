@@ -8,17 +8,11 @@
 
 .link-tags {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
+  text_decoration: none;
 
 }
 
-.link-one {
-  margin: auto;
-}
-
-.link-two {
-  margin: auto;
-}
 
 .sub-header-greeting {
   margin: auto;

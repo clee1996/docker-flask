@@ -5,18 +5,20 @@ import Books from './book_list/books'
 import Form from './post_book/form_book_page'
 import UserSession from './user_ui/user_form'
 import Homepage from './homepage/homepage'
+import EditForm from './edit_book/editbook'
 import {AuthProvider} from './context/index.js'
-import {ProtectedRoute} from './context/routes_util.js'
+import {ProtectedRoute, AuthRoute} from './context/routes_util.js'
 
 const App = () => {
   return(
     <div>
       <AuthProvider>
       <Router>
-        <Route exact path="/"><Homepage/></Route>
-        <Route exact path="/books"><Books/></Route>
+        <AuthRoute exact path="/" component={Homepage}/>
+        <ProtectedRoute path="/books" component={Books}/>
         <ProtectedRoute path="/formforbooks" component={Form}/>
-        <Route exact path="/entry"><UserSession/></Route>
+        <ProtectedRoute path="/editformforbooks" component={EditForm}/>
+        <AuthRoute exact path="/entry" component={UserSession}/>
         <ProtectedRoute path="/greeting" component={Greeting}/>
       </Router>
       </AuthProvider>
