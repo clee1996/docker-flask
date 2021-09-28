@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import './form_book.css'
 import {useAuthState} from '../context/index.js'
 
+
 const Form = () => {
 
   const [formData, updateFormData] = useState({author: "", title: "", synopsis: ""})
@@ -10,6 +11,14 @@ const Form = () => {
 
 
   const handleSubmit = (event: any) => {
+
+    const cookieValue = document.cookie
+  .split('; ')
+  .find(row => row.startsWith('csrf_access_token'))
+  .split('=')[1];
+
+
+
     event.preventDefault();
     let url = 'http://localhost:5000/api/bookspost'
     let data = {author: event.target.author.value,
@@ -22,9 +31,11 @@ const Form = () => {
     fetch(url,
     {method: 'POST',
     body: JSON.stringify(data),
-    headers: {Authorization:`Bearer ${user.token}`}
+    headers: {'X-CSRF-TOKEN': cookieValue},
+    credentials: 'include'
     }
          ).then(res => {
+           console.log(res)
            updatePostStatus(true)
          })
   }

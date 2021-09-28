@@ -5,7 +5,17 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_marshmallow import Marshmallow
-from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
+from flask_jwt_extended import (
+    create_access_token,
+    get_jwt_identity,
+    jwt_required,
+    JWTManager,
+    create_refresh_token,
+    set_access_cookies,
+    set_refresh_cookies,
+    unset_jwt_cookies
+)
+
 from flask_bcrypt import Bcrypt
 import sys
 
@@ -14,12 +24,13 @@ app = Flask(__name__)
 app.config["JWT_SECRET_KEY"]= b'lS\x16\xf2\xab]\xe9o`\xfa\x03M\xc1\x984\xcd'
 app.config['SQLALCHEMY_DATABASE_URI'] = uri
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
 jwt = JWTManager(app)
 bcrypt = Bcrypt(app)
 migrate = Migrate(app, db)
-cors = CORS(app, resources= {r'/api/*': {"origins": "*"}})
+cors = CORS(app, supports_credentials=True, resources= {r'/api/*': {"origins": "*"}})
 logging.getLogger('flask_cors').level = logging.DEBUG
 
 
@@ -86,18 +97,25 @@ def create_token():
     #modify test logic later
     user = Person.query.filter_by(username=username).first()
     if user is None:
-        return jsonify({"msg": "Wrong Username"})
+        return jsonify({"msg": "Wrong Username",
+                        "login": False}), 401
     else:
         user_schema = PersonSchema()
-        res = user_schema.dump(user)
+        user_serialized = user_schema.dump(user)
         pass_hash = user.password
         result = bcrypt.check_password_hash(pass_hash, password)
         if result is False:
-            return jsonify({"msg": "Wrong Password"})
+            return jsonify({"msg": "Wrong Password",
+                            "login": False}), 401
         else:
-            #default 15 min
+
             access_token = create_access_token(identity=username)
-            return jsonify(access_token=access_token, user=res)
+            refresh_token = create_refresh_token(identity=username)
+            resp = jsonify({"login": True,
+                            "user": user_serialized})
+            set_access_cookies(resp, access_token)
+            set_refresh_cookies(resp, refresh_token)
+            return resp, 200
 
 @app.route('/api/register', methods=['POST'])
 def register():
@@ -112,12 +130,18 @@ def register():
         db.session.commit()
         person_schema = PersonSchema()
         output = person_schema.dump(user)
-        return jsonify(output)
+        return jsonify(output), 201
 
 
     else:
-        return jsonify({"msg": "username is taken"})
+        return jsonify({"msg": "username is taken"}), 409
 
+
+@app.route('/api/logout', methods=['POST'])
+def logout():
+    resp = jsonify({"logout": True})
+    unset_jwt_cookies(resp)
+    return resp, 200
 
 
 
@@ -135,6 +159,7 @@ def index():
     return jsonify({"books":output})
 
 @app.route('/api/books/<id>')
+@jwt_required()
 def bookInfo(id):
     books_schema = BookSchema()
     book = Book.query.get(id)
@@ -172,8 +197,8 @@ def bookPatch(id):
 def ownBooks(id):
     book_schema = BookSchema()
     person = Person.query.get(id)
-    arrOfBooks = person.books
-    output = book_schema.dump(arrOfBooks, many=True)
+    arr_of_books = person.books
+    output = book_schema.dump(arr_of_books, many=True)
     return jsonify({"books":output})
 
 

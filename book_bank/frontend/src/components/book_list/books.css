@@ -10,3 +10,10 @@
   border-top: 2px solid;
   border-color: #C0C0C0
 }
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: inherit;
+}

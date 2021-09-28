@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import {useLocation, useHistory} from 'react-router-dom'
 import {loginUser, useAuthState, useAuthDispatch} from '../context/index.js'
+import './user_form.css'
 
 
 interface stateType {
@@ -40,7 +41,6 @@ const {loading, errorMesage} = useAuthState()
     const submit = async () => {
       try {
       let res =  await loginUser(dispatch, data)
-      console.log(res)
       if (!res.user) {
         displayErr(true)
         setMsg(res.msg)
@@ -64,6 +64,15 @@ const {loading, errorMesage} = useAuthState()
     const register = async () => {
     let url = "http://localhost:5000/api/register"
     let res = await fetch(url, {method: "POST", body: JSON.stringify(data)})
+    let jsonObj = await res.json()
+    if (jsonObj.msg) {
+      displayErr(true)
+      setMsg(jsonObj.msg)
+    }
+    else {
+    setMsg("Success!")
+    }
+
     }
 
     register()
@@ -80,23 +89,26 @@ const {loading, errorMesage} = useAuthState()
   if (formType === 'login') {
   return(
     <div>
-      <form onSubmit={handleSubmit}>
-        <label>Username:</label><input type="text" name="username"></input>
-        <label>Username:</label><input type="password" name="password"></input>
-        <button type="submit">Login</button>
-      </form>
+      <h1 className="heading-user">Welcome to the Book Bank</h1>
+      <form className="form-for-user" onSubmit={handleSubmit}>
+        <label>Username:</label><input className="user-input"type="text" name="username"></input>
+        <label>Password:</label><input className="user-input"type="password" name="password"></input>
+        <button className="button-user" type="submit">Login</button>
       {errr ? <div>{msg}</div> : null}
+      </form>
     </div>
   )
   }
   else if (formType === 'signup') {
     return(
       <div>
-        <form onSubmit={registerSubmit}>
-          <label>Username:</label><input type="text" name="username"/>
-          <label>Username</label><input type="password" name="password"/>
-          <button type="submit" >Signup</button>
+        <h1 className="heading-user">Welcome to the Book Bank</h1>
+        <form className= "form-for-user"onSubmit={registerSubmit}>
+          <label>Username:</label><input className="user-input" type="text" name="username"/>
+          <label>Password:</label><input className="user-input"type="password" name="password"/>
+          <button className="button-user" type="submit" >Signup</button>
         </form>
+        {errr ? <div>{msg}</div> : null}
       </div>
     )
   }

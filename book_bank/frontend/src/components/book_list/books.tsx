@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom'
 import './books.css'
 import {useAuthState} from '../context/index.js'
-
+import PacmanLoader from 'react-spinners/PacmanLoader'
 
 const Books = () => {
 
@@ -15,14 +15,13 @@ const Books = () => {
   useEffect(() => {
     const fetchListOfBooks = async () => {
       if (!fetchedStatus) {
-      const res = await fetch(`http://localhost:5000/api/personbooks/${userid}`, {
-        method: "GET", headers: {Authorization: `Bearer ${user.token}`}
-      })
+      const res = await fetch(`http://localhost:5000/api/personbooks/${userid}`,
+                              {credentials: 'include'})
       const data = await res.json()
+
       let arr:string[] = []
       for (let i = 0; i < data.books.length; i++) {
         arr.push(data.books[i])
-        console.log(data.books[i])
       }
 
       setFetchedStatus(true)
@@ -35,10 +34,15 @@ const Books = () => {
 
   const handleClick = (event: any, id: any, idx: number) => {
     event.preventDefault()
+
+    const cookieValue = document.cookie.split('; ').find(row => row.startsWith('csrf_access_token'))
+    .split('=')[1]
+
     const deleteBook = async () => {
       await fetch(`http://localhost:5000/api/books/${id}`, {
         method: 'DELETE',
-      headers: {Authorization: `Bearer ${user.token}`}
+      headers: {'X-CSRF-TOKEN': cookieValue},
+      credentials: 'include'
       })
       setListOfBooks(listOfBooks.filter((item, index) =>
       index !== idx
@@ -51,7 +55,9 @@ const Books = () => {
 
 
 if (fetchedStatus === false) {
-return null
+  return <div className="spinner">
+  <PacmanLoader/>
+  </div>
 }
 
   return(

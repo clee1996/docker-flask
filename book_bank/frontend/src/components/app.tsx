@@ -15,11 +15,11 @@ const App = () => {
       <AuthProvider>
       <Router>
         <AuthRoute exact path="/" component={Homepage}/>
-        <ProtectedRoute path="/books" component={Books}/>
-        <ProtectedRoute path="/formforbooks" component={Form}/>
-        <ProtectedRoute path="/editformforbooks" component={EditForm}/>
+        <ProtectedRoute exact path="/books" component={Books}/>
+        <ProtectedRoute exact path="/formforbooks" component={Form}/>
+        <ProtectedRoute exact path="/editformforbooks" component={EditForm}/>
         <AuthRoute exact path="/entry" component={UserSession}/>
-        <ProtectedRoute path="/greeting" component={Greeting}/>
+        <ProtectedRoute exact path="/greeting" component={Greeting}/>
       </Router>
       </AuthProvider>
     </div>

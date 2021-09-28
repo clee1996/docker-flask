@@ -5,22 +5,22 @@ import {useAuthState} from './context.js'
 
 export const ProtectedRoute = ({component: Component, ...rest}) => {
 
-  const user = useAuthState()
+  const auth = useAuthState()
   return(
     <Route {...rest}
       render = {props =>
-          user.token ? <Component {...rest} {...props}/> :
+          auth.login ? <Component {...rest} {...props}/> :
           <Redirect to="/"/>
       }/>
   )
 }
 
 export const AuthRoute = ({component: Component, ...rest}) => {
-  const user = useAuthState()
+  const auth = useAuthState()
   return(
     <Route {...rest}
       render = {props =>
-          !user.token ? <Component {...rest} {...props}/> :
+          !auth.login ? <Component {...rest} {...props}/> :
           <Redirect to="/greeting"/>
       }
     />

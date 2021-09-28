@@ -22,6 +22,10 @@ const EditForm = () => {
   const {book} = state;
 
   const handleSubmit = (event: any) => {
+
+    const cookieValue = document.cookie.split('; ')
+    .find(row => row.startsWith('csrf_access_token')).split('=')[1];
+
     event.preventDefault()
     let data = {
       author: event.target.author.value,
@@ -35,7 +39,8 @@ const EditForm = () => {
         console.log(url)
         await fetch(url, {
         method: "PATCH", body: JSON.stringify(data),
-        headers: {Authorization: `Bearer ${user.token}`}
+        headers: {'X-CSRF-TOKEN': cookieValue},
+        credentials: 'include'
       })
     }
     submit()

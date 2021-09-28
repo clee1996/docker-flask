@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {Link, useHistory} from 'react-router-dom';
 import {useAuthState, logout, useAuthDispatch} from '../context/index.js'
 import './greeting.css'
+
 type Book = {
   title: string;
   canonicalVolumeLink: string;
@@ -61,23 +62,20 @@ const Greeting = () => {
 
 
   return(
-    <div>
+    <div className="greeting-component">
       <h1 className="header">Welcome to the Book Bank</h1>
-      <button onClick={handleLogout}>Logout Here</button>
+      <button className="logout-button"onClick={handleLogout}>Logout</button>
         <h2 className = "sub-header-greeting">Random Recommended List of Books for your Pleasure!</h2>
       {info.map((books, idx) => (
         <div className="greeting-list-book" key ={idx}>
-          <div>
           <div>{books.volumeInfo.title}</div>
-          <a href={books.volumeInfo.canonicalVolumeLink}>CLick here for the Book</a>
-          </div>
-          <img src={books.volumeInfo.imageLinks.smallThumbnail}></img>
+          <a href={books.volumeInfo.canonicalVolumeLink}><img className="link-to-book" src={books.volumeInfo.imageLinks.smallThumbnail}></img></a>
         </div>
       ))}
         <div className="link-tags">
-          <Link to ="/books"><button className="link-one">Click here to View a List of Our Favorite Books</button></Link>
+          <Link to ="/books"><button className="link-one">View Your Favorite Books</button></Link>
 
-          <Link to ="/formforbooks"><button className="link-two">Click here to Add a Book</button></Link>
+          <Link to ="/formforbooks"><button className="link-two">Add a Book</button></Link>
 
         </div>
 

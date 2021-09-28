@@ -3,18 +3,19 @@ import regeneratorRuntime from "regenerator-runtime";
 export async function loginUser(dispatch, loginPayload) {
   const requestOptions = {
     method: 'POST',
-    //headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(loginPayload),
+    credentials: 'include'
   };
 
   try {
     dispatch({ type: 'REQUEST_LOGIN' });
     let response = await fetch('http://localhost:5000/api/login', requestOptions);
+    console.log(response)
     let data = await response.json();
+    console.log(data)
 
-    if (data && data.user) {
+    if (data && data.login) {
       dispatch({ type: 'LOGIN_SUCCESS', payload: data });
-      localStorage.setItem('currentUser', JSON.stringify(data));
       return data
     }
     else if (data.msg) {
@@ -28,7 +29,8 @@ export async function loginUser(dispatch, loginPayload) {
 }
 
 export async function logout(dispatch) {
+  let resp = await fetch("http://localhost:5000/api/logout", {method: "POST"})
   dispatch({ type: 'LOGOUT' });
-  localStorage.removeItem('currentUser');
-  localStorage.removeItem('token');
+
+
 }
