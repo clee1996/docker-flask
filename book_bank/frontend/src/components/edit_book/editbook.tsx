@@ -1,6 +1,7 @@
 import React from 'react'
 import {useAuthState} from '../context/index.js'
 import {useLocation, useHistory} from 'react-router-dom'
+import {cookieValue} from '../context/helperfuncs.js'
 
 type Book = {
   author: string;
@@ -23,8 +24,6 @@ const EditForm = () => {
 
   const handleSubmit = (event: any) => {
 
-    const cookieValue = document.cookie.split('; ')
-    .find(row => row.startsWith('csrf_access_token')).split('=')[1];
 
     event.preventDefault()
     let data = {
@@ -39,7 +38,7 @@ const EditForm = () => {
         console.log(url)
         await fetch(url, {
         method: "PATCH", body: JSON.stringify(data),
-        headers: {'X-CSRF-TOKEN': cookieValue},
+        headers: {'X-CSRF-TOKEN': cookieValue()},
         credentials: 'include'
       })
     }

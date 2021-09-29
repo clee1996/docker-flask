@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom'
 import './books.css'
 import {useAuthState} from '../context/index.js'
 import PacmanLoader from 'react-spinners/PacmanLoader'
+import {cookieValue} from '../context/helperfuncs.js'
 
 const Books = () => {
 
@@ -35,13 +36,10 @@ const Books = () => {
   const handleClick = (event: any, id: any, idx: number) => {
     event.preventDefault()
 
-    const cookieValue = document.cookie.split('; ').find(row => row.startsWith('csrf_access_token'))
-    .split('=')[1]
-
     const deleteBook = async () => {
       await fetch(`http://localhost:5000/api/books/${id}`, {
         method: 'DELETE',
-      headers: {'X-CSRF-TOKEN': cookieValue},
+      headers: {'X-CSRF-TOKEN': cookieValue()},
       credentials: 'include'
       })
       setListOfBooks(listOfBooks.filter((item, index) =>

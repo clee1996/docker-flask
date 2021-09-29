@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import './form_book.css'
 import {useAuthState} from '../context/index.js'
-
+import {cookieValue} from '../context/helperfuncs.js'
 
 const Form = () => {
 
@@ -11,12 +11,6 @@ const Form = () => {
 
 
   const handleSubmit = (event: any) => {
-
-    const cookieValue = document.cookie
-  .split('; ')
-  .find(row => row.startsWith('csrf_access_token'))
-  .split('=')[1];
-
 
 
     event.preventDefault();
@@ -31,7 +25,7 @@ const Form = () => {
     fetch(url,
     {method: 'POST',
     body: JSON.stringify(data),
-    headers: {'X-CSRF-TOKEN': cookieValue},
+    headers: {'X-CSRF-TOKEN': cookieValue()},
     credentials: 'include'
     }
          ).then(res => {
