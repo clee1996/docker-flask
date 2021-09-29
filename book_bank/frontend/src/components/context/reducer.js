@@ -1,13 +1,14 @@
 import React, { useReducer } from "react";
 
-let user = localStorage.getItem("currentUser")
-  ? JSON.parse(localStorage.getItem("currentUser")).user
-  : "";
+let user = localStorage.getItem("currentUser") ? JSON.parse(localStorage.getItem("currentUser")) :
+  "";
+
+let loggedIn = localStorage.getItem("loggedIn") ? localStorage.getItem("loggedIn") : false
 
 
 export const initialState = {
-  userDetails: "" || user,
-  login: false,
+  userDetails: user === "" ? "" : user,
+  login: loggedIn === "true"? true: false,
   loading: false,
   errorMessage: null
 };
@@ -31,7 +32,6 @@ export const AuthReducer = (initialState, action) => {
         errorMessage: null,
         loading: false,
         userDetails: "",
-        user: "",
         login: false
       };
 

@@ -51,7 +51,7 @@ const Greeting = () => {
 
   const handleLogout = () => {
     logout(dispatch)
-    history.push('/')
+    //history.push('/')
 
   }
 

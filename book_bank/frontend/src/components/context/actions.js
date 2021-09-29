@@ -10,11 +10,12 @@ export async function loginUser(dispatch, loginPayload) {
   try {
     dispatch({ type: 'REQUEST_LOGIN' });
     let response = await fetch('http://localhost:5000/api/login', requestOptions);
-    console.log(response)
     let data = await response.json();
     console.log(data)
 
     if (data && data.login) {
+      localStorage.setItem(("currentUser"), JSON.stringify(data.user))
+      localStorage.setItem("loggedIn", true)
       dispatch({ type: 'LOGIN_SUCCESS', payload: data });
       return data
     }
@@ -30,6 +31,8 @@ export async function loginUser(dispatch, loginPayload) {
 
 export async function logout(dispatch) {
   let resp = await fetch("http://localhost:5000/api/logout", {method: "POST"})
+  localStorage.removeItem("currentUser")
+  localStorage.removeItem("loggedIn")
   dispatch({ type: 'LOGOUT' });
 
 
