@@ -5,8 +5,7 @@ import {cookieValue} from '../context/helperfuncs.js'
 
 const Form = () => {
 
-  const [formData, updateFormData] = useState({author: "", title: "", synopsis: ""})
-  const [showPostStatus, updatePostStatus] = useState(false)
+  const [showPostStatus, updatePostStatus] = useState<boolean>(false)
   const user = useAuthState()
 
 

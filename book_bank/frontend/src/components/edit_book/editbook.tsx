@@ -35,7 +35,7 @@ const EditForm = () => {
     const submit = async () => {
       let newBookId = book.id.toString()
       let url = `http://localhost:5000/api/books/${newBookId}`
-        console.log(url)
+
         await fetch(url, {
         method: "PATCH", body: JSON.stringify(data),
         headers: {'X-CSRF-TOKEN': cookieValue()},

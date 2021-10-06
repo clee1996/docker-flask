@@ -14,12 +14,13 @@ type VolumeInfo = {
 }
 
 
+
 const Greeting = () => {
 
   const history = useHistory()
   const dispatch = useAuthDispatch()
   const [info, setInfo] = useState<VolumeInfo[]>([])
-  const [fetchingBooks, setFetchingBooks] = useState(true)
+  const [fetchingBooks, setFetchingBooks] = useState<boolean>(true)
 
   useEffect(() => {
 
@@ -35,6 +36,7 @@ const Greeting = () => {
 
         arr.push(data.items[i])
       }
+
       setFetchingBooks(false)
       setInfo(prev => [...prev, ...arr])
 
@@ -69,7 +71,7 @@ const Greeting = () => {
       {info.map((books, idx) => (
         <div className="greeting-list-book" key ={idx}>
           <div>{books.volumeInfo.title}</div>
-          <a href={books.volumeInfo.canonicalVolumeLink}><img className="link-to-book" src={books.volumeInfo.imageLinks.smallThumbnail}></img></a>
+          <a href={books.volumeInfo.canonicalVolumeLink} target="_blank"><img className="link-to-book" src={books.volumeInfo.imageLinks.smallThumbnail}></img></a>
         </div>
       ))}
         <div className="link-tags">

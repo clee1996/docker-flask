@@ -21,4 +21,22 @@ textarea {
   margin-bottom: 10px;
 }
 
+input {
+  border: 1px solid transparent;
+}
 
+input:hover {
+  background-color: white;
+  border: 1px solid;
+  border-color: #898468;
+}
+
+textarea {
+  border: 1px solid transparent;
+}
+
+textarea:hover {
+  background-color: white;
+  border: 1px solid;
+  border-color: #898468;
+}

@@ -22,12 +22,25 @@ const state = location.state as stateType
 const {formType} = state;
 const dispatch = useAuthDispatch()
 const history = useHistory()
-const [errr, displayErr] = useState(false)
-const [msg, setMsg] = useState("")
+const [errr, displayErr] = useState<boolean>(false)
+const [msg, setMsg] = useState<string>("")
 
 
 const {loading, errorMesage} = useAuthState()
 
+const submit = async (data: Data) => {
+
+      try {
+      let res =  await loginUser(dispatch, data)
+      if (!res.user) {
+        displayErr(true)
+        setMsg(res.msg)
+        return
+      }
+     //history.push('/greeting')
+      } catch (error) {
+      }
+}
 
 
   const handleSubmit = (event: any) => {
@@ -38,20 +51,7 @@ const {loading, errorMesage} = useAuthState()
     }
 
 
-    const submit = async () => {
-      try {
-      let res =  await loginUser(dispatch, data)
-      if (!res.user) {
-        displayErr(true)
-        setMsg(res.msg)
-        return
-      }
-     history.push('/greeting')
-      } catch (error) {
-      }
-    }
-
-    submit()
+    submit(data)
   }
 
   const registerSubmit = (event: any) => {
@@ -70,6 +70,7 @@ const {loading, errorMesage} = useAuthState()
       setMsg(jsonObj.msg)
     }
     else {
+      submit(data)
     setMsg("Success!")
     }
 

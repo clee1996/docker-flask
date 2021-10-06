@@ -5,10 +5,18 @@ import {useAuthState} from '../context/index.js'
 import PacmanLoader from 'react-spinners/PacmanLoader'
 import {cookieValue} from '../context/helperfuncs.js'
 
+interface Book {
+  author: string;
+  id: number;
+  person_id: number;
+  synopsis: string;
+  title: string;
+}
+
 const Books = () => {
 
-  const [listOfBooks, setListOfBooks] = useState([])
-  const [fetchedStatus, setFetchedStatus] = useState(false)
+  const [listOfBooks, setListOfBooks] = useState<Book[]>([])
+  const [fetchedStatus, setFetchedStatus] = useState<boolean>(false)
 
   const user = useAuthState()
   const userid = user.userDetails.id
@@ -20,9 +28,10 @@ const Books = () => {
                               {credentials: 'include'})
       const data = await res.json()
 
-      let arr:string[] = []
+      let arr: Array<Book> = []
       for (let i = 0; i < data.books.length; i++) {
         arr.push(data.books[i])
+        console.log(data.books[i])
       }
 
       setFetchedStatus(true)
@@ -33,7 +42,7 @@ const Books = () => {
     fetchListOfBooks()
   })
 
-  const handleClick = (event: any, id: any, idx: number) => {
+  const handleClick = (event: any, id: number, idx: number) => {
     event.preventDefault()
 
     const deleteBook = async () => {
