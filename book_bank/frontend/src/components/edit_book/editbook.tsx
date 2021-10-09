@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 import {useAuthState} from '../context/index.js'
 import {useLocation, useHistory} from 'react-router-dom'
 import {cookieValue} from '../context/helperfuncs.js'
@@ -50,6 +51,7 @@ const EditForm = () => {
   return(
     <div>
       <h1 className="post-header">Edit this Book</h1>
+      <Link to="/books"><button>Back</button></Link>
       <form className="post-form" onSubmit={handleSubmit}>
         <label>Author:</label><input type="text" name="author" defaultValue={book.author}/>
         <label>Title:</label><input type="text"name="title" defaultValue={book.title}/>

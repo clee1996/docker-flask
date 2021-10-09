@@ -8,7 +8,11 @@ COPY yarn.lock .
 
 RUN yarn install
 
-COPY . .
+COPY tsconfig.json .
+
+COPY src .
+
+COPY webpack.config.js .
 
 EXPOSE 8080
 

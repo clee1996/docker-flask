@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import {Link} from 'react-router-dom'
 import './form_book.css'
 import {useAuthState} from '../context/index.js'
 import {cookieValue} from '../context/helperfuncs.js'
@@ -28,7 +29,6 @@ const Form = () => {
     credentials: 'include'
     }
          ).then(res => {
-           console.log(res)
            updatePostStatus(true)
          })
   }
@@ -39,6 +39,7 @@ const Form = () => {
   return (
     <div>
       <h1 className="post-header">Put Your Favorite Books in Our Database!</h1>
+      <Link to ="/greeting"><button>Back</button></Link>
       <form onSubmit={handleSubmit} className="post-form">
         <label>Author:</label><input type="text" name="author"></input>
         <label>Title:</label><input type="text" name="title"></input>

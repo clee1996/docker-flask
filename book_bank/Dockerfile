@@ -16,7 +16,9 @@ RUN poetry install
 
 EXPOSE 5000
 
-COPY . .
+COPY book_bank .
+
+COPY entrypoint.sh .
 
 ENV FLASK_APP=/project/book_bank/app
 

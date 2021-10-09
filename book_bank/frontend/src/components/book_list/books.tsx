@@ -31,7 +31,6 @@ const Books = () => {
       let arr: Array<Book> = []
       for (let i = 0; i < data.books.length; i++) {
         arr.push(data.books[i])
-        console.log(data.books[i])
       }
 
       setFetchedStatus(true)
@@ -70,6 +69,12 @@ if (fetchedStatus === false) {
   return(
     <div>
       <h1 className="edit-header">Edit or Delete a Book</h1>
+      <Link to="/greeting"><button>Home</button></Link>
+      <div className="column-name">
+        <div>Title</div>
+        <div>Author</div>
+        <div>Synopsis</div>
+      </div>
       {listOfBooks.map((book, idx) => (
         <div className="individual-book" key={idx}>
           <div>{book.title}</div>

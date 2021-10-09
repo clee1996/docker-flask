@@ -28,9 +28,12 @@ def create_app():
     migrate.init_app(app, db)
     cors.init_app(app, supports_credentials=True, resources={r'/api/*': {"origins": "*"}})
 
+    with app.app_context():
+        db.create_all()
 
 
-    #db.create_all()
+
+
     return app
 
 app = create_app()

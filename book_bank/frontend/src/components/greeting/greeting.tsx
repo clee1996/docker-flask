@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {Link, useHistory} from 'react-router-dom';
 import {useAuthState, logout, useAuthDispatch} from '../context/index.js'
+import BounceLoader from 'react-spinners/BounceLoader'
 import './greeting.css'
 
 type Book = {
@@ -58,7 +59,9 @@ const Greeting = () => {
   }
 
   if (info.length < 1) {
-  return null
+    return <div className = "spinner">
+      <BounceLoader/>
+    </div>
   }
 
 
